@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import sys
+
 braille_base = 0x2800
 
 def q(v, pos):
@@ -23,6 +25,24 @@ def braille(b):
     return r
 
 
-for b in range(0,256):
-    bb = braille(b)
-    print('%03d' % b, chr(braille_base + bb))
+def all(f):
+    for b in range(0,256):
+        bb = braille(b)
+        f('%03d' % b, chr(braille_base + bb))
+
+def printall(): all(print)
+
+def pipe():
+    bs = []
+    all(lambda _, b: bs.append(b))
+    while True:
+        cs = sys.stdin.buffer.read(1)
+        if (len(cs) < 1):
+            break;
+        c = cs[0]
+        if (c < 0):
+            break;
+        sys.stdout.write(bs[c])
+        sys.stdout.flush()
+
+pipe()
