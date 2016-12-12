@@ -28,9 +28,7 @@ def braille(b):
 def all(f):
     for b in range(0,256):
         bb = braille(b)
-        f('%03d' % b, chr(braille_base + bb))
-
-def printall(): all(print)
+        f(b, chr(braille_base + bb))
 
 def pipe():
     bs = []
@@ -45,4 +43,9 @@ def pipe():
         sys.stdout.write(bs[c])
         sys.stdout.flush()
 
-pipe()
+def print_lua():
+    def f(b, s):
+        print('[%3d] = "%s",' % (b, s))
+    all(f)
+
+print_lua()
